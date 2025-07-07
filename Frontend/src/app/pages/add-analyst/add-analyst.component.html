@@ -1,0 +1,121 @@
+<div class="container mt-4">
+
+  <!-- 🔍 Barre de recherche + ajout -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <button class="btn btn-primary px-4" (click)="openModal()">
+      <i class="fas fa-user-plus me-2"></i> Ajouter un analyste
+    </button>
+
+    <div class="input-group w-auto">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="fas fa-search text-muted"></i>
+      </span>
+      <input type="text" class="form-control border-start-0" placeholder="Rechercher"
+             [(ngModel)]="searchTerm" (input)="applyFilter()" />
+    </div>
+  </div>
+
+  <!-- 🧾 Tableau -->
+  <div class="table-responsive">
+    <table class="table table-hover align-middle shadow-sm rounded">
+      <thead class="table-light text-primary">
+        <tr>
+          <th>ID</th>
+          <th (click)="sortByPrenom()" class="cursor-pointer">
+            Prénom
+            <i class="fas fa-sort ms-1 text-muted"></i>
+          </th>
+                    <th (click)="sortByNom()" class="cursor-pointer">
+            Nom
+            <i class="fas fa-sort ms-1 text-muted"></i>
+          </th>
+          <th>Email</th>
+          <th>Rôle</th>
+          <th class="text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let analyst of filteredAnalysts | paginate: { itemsPerPage, currentPage: page }; index as i">
+          <td>{{ i + 1 }}</td>
+          <td>{{ analyst.firstname }}</td>
+          <td>{{ analyst.lastname }}</td>
+          <td>{{ analyst.email }}</td>
+          <td>
+            <span *ngFor="let role of analyst.roles" class="badge bg-info text-dark me-1">{{ role.name }}</span>
+          </td>
+          <td class="text-center">
+            <!-- Modifier -->
+            <button class="btn btn-outline-primary btn-sm me-2 rounded-circle" (click)="openModal(analyst)">
+              <i class="fas fa-pen"></i>
+            </button>
+
+            <!-- Supprimer -->
+            <button class="btn btn-outline-danger btn-sm me-2 rounded-circle" (click)="delete(analyst.id)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+
+            <!-- 🔼 Upgrade -->
+            <button *ngIf="!isAdminUser(analyst)"
+                    class="btn btn-outline-warning btn-sm rounded-circle"
+                    (click)="upgrade(analyst.id)">
+              <i class="fas fa-arrow-up"></i>
+            </button>
+
+            <!-- ⬇️ Unupgrade -->
+            <button *ngIf="isAdminUser(analyst)"
+                    class="btn btn-outline-secondary btn-sm rounded-circle"
+                    (click)="unupgrade(analyst.id)">
+              <i class="fas fa-arrow-down"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 📄 Pagination -->
+  <div class="mt-4 d-flex justify-content-center">
+    <pagination-controls
+      (pageChange)="page = $event"
+      [maxSize]="5"
+      [autoHide]="true"
+      [previousLabel]="'‹'"
+      [nextLabel]="'›'">
+    </pagination-controls>
+  </div>
+
+  <!-- 🧾 MODAL Ajouter/Modifier Analyste -->
+  <div *ngIf="showModal" class="modal fade show d-block" style="background-color: rgba(0,0,0,0.5); z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered">
+      <div class="modal-content p-4">
+        <h5 class="modal-title text-center fw-bold text-primary mb-4">
+          {{ isEdit ? 'Modifier' : 'Ajouter' }} un Analyste
+        </h5>
+
+        <form [formGroup]="form" (ngSubmit)="save()">
+          <div class="mb-3">
+            <input type="text" class="form-control form-control-lg" placeholder="Prénom" formControlName="firstname" />
+          </div>
+          <div class="mb-3">
+            <input type="text" class="form-control form-control-lg" placeholder="Nom" formControlName="lastname" />
+          </div>
+          <div class="mb-3">
+            <input type="email" class="form-control form-control-lg" placeholder="Email" formControlName="email"
+                   [readonly]="isEdit" />
+          </div>
+          <div class="mb-4" *ngIf="!isEdit">
+            <input type="password" class="form-control form-control-lg" placeholder="Mot de passe" formControlName="password" />
+          </div>
+
+          <div class="text-end">
+            <button type="button" class="btn btn-outline-secondary me-2 px-4 rounded-pill" (click)="onCancel()">Annuler</button>
+            <button type="submit" class="btn btn-success px-4 rounded-pill" [disabled]="form.invalid">
+              {{ isEdit ? 'Enregistrer' : 'Créer' }}
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
+</div>

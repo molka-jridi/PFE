@@ -1,0 +1,38 @@
+/* ✅ Harmonisation globale */
+input.form-control {
+  background-color: #f9f9f9;
+  border: 1px solid #ccc;
+  border-radius: 0.5rem;
+  padding: 0.6rem 1rem;
+  color: #000;
+}
+
+input.form-control::placeholder {
+  color: #bbb;
+  opacity: 1;
+}
+
+.table {
+  border-collapse: separate;
+  border-spacing: 0 0.4rem;
+
+  td, th {
+    vertical-align: middle;
+  }
+
+  tr:hover {
+    background-color: #f5faff;
+  }
+}
+
+.modal {
+  z-index: 1050;
+}
+
+.modal-backdrop {
+  z-index: 1040;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}

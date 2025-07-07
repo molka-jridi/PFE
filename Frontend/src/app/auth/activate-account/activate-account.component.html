@@ -1,0 +1,36 @@
+<div class="container mt-5">
+  <h2>Activation du compte</h2>
+
+  <form [formGroup]="activationForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label>Code d’activation</label>
+      <input
+        type="text"
+        maxlength="6"
+        class="form-control"
+        formControlName="token"
+        [ngClass]="{ 'is-invalid': token.invalid && (token.dirty || token.touched) }"
+      />
+      <div *ngIf="token.invalid && (token.dirty || token.touched)" class="invalid-feedback">
+        <div *ngIf="token.errors?.['required']">Le code est requis.</div>
+        <div *ngIf="token.errors?.['minlength'] || token.errors?.['maxlength']">6 chiffres requis.</div>
+      </div>
+    </div>
+
+    <button class="btn btn-success" type="submit" [disabled]="activationForm.invalid || loading">
+      Valider
+    </button>
+
+    <button
+      class="btn btn-link"
+      type="button"
+      (click)="resendCode()"
+      [disabled]="!canResend || loading"
+    >
+      Renvoyer le code {{ canResend ? '' : '(' + cooldown + 's)' }}
+    </button>
+  </form>
+
+  <div *ngIf="message" class="alert alert-success mt-3">{{ message }}</div>
+  <div *ngIf="error" class="alert alert-danger mt-3">{{ error }}</div>
+</div>

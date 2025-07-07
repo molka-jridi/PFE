@@ -1,0 +1,16 @@
+<div class="wrapper">
+  <app-navbar></app-navbar>
+  <app-sidebar (openModal)="showAddAnalystModal = true"></app-sidebar>
+
+  <app-add-analyst
+    *ngIf="showAddAnalystModal"
+    (close)="showAddAnalystModal = false">
+  </app-add-analyst>
+
+
+  <div class="content-wrapper">
+    <router-outlet></router-outlet>
+  </div>
+
+  <app-footer></app-footer>
+</div>

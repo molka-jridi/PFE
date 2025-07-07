@@ -1,0 +1,63 @@
+<div class="register-page d-flex justify-content-center align-items-center min-vh-100 bg-light">
+  <div class="register-box shadow-lg p-5 rounded bg-white w-100" style="max-width: 450px;">
+    <!-- ✅ Logo + Titre -->
+    <div class="text-center mb-4">
+      <img src="https://th.bing.com/th/id/OIP.xcpqvTA4fANEkLOiNBSOKwHaHa?rs=1&pid=ImgDetMain"
+           alt="Logo banque"
+           width="80"
+           height="80"
+           class="mb-3 rounded-circle shadow-sm"
+      />
+      <h3 class="text-primary fw-bold">
+        <i class="fas fa-user-plus me-2"></i> Créer un compte
+      </h3>
+    </div>
+
+    <!-- ✅ Message de succès ou erreur -->
+    <div *ngIf="message" class="alert alert-success text-center">{{ message }}</div>
+    <div *ngIf="error" class="alert alert-danger text-center">{{ error }}</div>
+
+    <!-- 🧾 Formulaire -->
+    <form [formGroup]="registerForm" (ngSubmit)="onSubmit()">
+      <div class="form-group mb-3">
+        <label for="firstname" class="form-label">Prénom</label>
+        <input type="text" id="firstname" class="form-control" placeholder="Votre prénom" formControlName="firstname">
+        <small class="text-danger" *ngIf="registerForm.get('firstname')?.invalid && registerForm.get('firstname')?.touched">
+          Prénom requis (min 2 caractères)
+        </small>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="lastname" class="form-label">Nom</label>
+        <input type="text" id="lastname" class="form-control" placeholder="Votre nom" formControlName="lastname">
+        <small class="text-danger" *ngIf="registerForm.get('lastname')?.invalid && registerForm.get('lastname')?.touched">
+          Nom requis (min 2 caractères)
+        </small>
+      </div>
+
+      <div class="form-group mb-3">
+        <label for="email" class="form-label">Adresse email</label>
+        <input type="email" id="email" class="form-control" placeholder="exemple@email.com" formControlName="email">
+        <small class="text-danger" *ngIf="registerForm.get('email')?.invalid && registerForm.get('email')?.touched">
+          Email invalide ou requis
+        </small>
+      </div>
+
+      <div class="form-group mb-4">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" id="password" class="form-control" placeholder="********" formControlName="password">
+        <small class="text-danger" *ngIf="registerForm.get('password')?.invalid && registerForm.get('password')?.touched">
+          Mot de passe requis (min 8 caractères)
+        </small>
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100 py-2" [disabled]="loading">
+        <i class="fas fa-user-plus me-1"></i> {{ loading ? 'Chargement...' : "S'inscrire" }}
+      </button>
+    </form>
+
+    <p class="text-center mt-4 mb-0">
+      <a routerLink="/login" class="text-muted">Vous avez déjà un compte ? <strong>Se connecter</strong></a>
+    </p>
+  </div>
+</div>

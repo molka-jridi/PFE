@@ -1,0 +1,23 @@
+input.form-control {
+  background-color: #ffffff !important;
+  color: #000000 !important;
+  border: 1px solid #ccc;
+  border-radius: 0.375rem;
+  padding: 0.6rem 1rem;
+}
+
+
+input.form-control::placeholder {
+  color: #bbbbbb !important;
+  opacity: 1;
+}
+body {
+  font-family: 'Inter', sans-serif;
+}
+.modal {
+  z-index: 1050;
+}
+
+.modal-backdrop {
+  z-index: 1040;
+}

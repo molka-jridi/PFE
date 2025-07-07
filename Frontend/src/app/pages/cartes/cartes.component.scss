@@ -1,0 +1,8 @@
+th, td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+th:nth-child(7), td:nth-child(7) {
+  min-width: 80px; // Annulée
+}

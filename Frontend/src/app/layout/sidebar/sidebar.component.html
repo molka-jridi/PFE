@@ -1,0 +1,67 @@
+<aside class="main-sidebar sidebar-light elevation-4">
+  <!-- 🔷 Logo -->
+  <a class="brand-link d-flex align-items-center">
+    <img src="https://th.bing.com/th/id/OIP.xcpqvTA4fANEkLOiNBSOKwHaHa?rs=1&pid=ImgDetMain"
+         alt="Logo BTE"
+         class="brand-image img-circle elevation-3 me-2"
+         style="opacity: .9; width: 35px; height: 35px;">
+    <span class="brand-text fw-bold fs-5">BTE</span>
+  </a>
+
+  <!-- 📜 Sidebar Content -->
+  <div class="sidebar">
+    <nav class="mt-3">
+      <ul class="nav nav-pills nav-sidebar flex-column" role="menu">
+
+        <!-- 📊 Dashboard -->
+        <li class="nav-item">
+          <a routerLink="/dashboard" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-chart-line text-primary"></i>
+            <p>Dashboard</p>
+          </a>
+        </li>
+
+        <!-- 👥 Clients -->
+        <li class="nav-item">
+          <a routerLink="/client" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-users text-info"></i>
+            <p>Clients</p>
+          </a>
+        </li>
+
+        <!-- 💳 Cartes -->
+        <li class="nav-item">
+          <a routerLink="/cartes" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-id-card text-success"></i>
+            <p>Cartes</p>
+          </a>
+        </li>
+
+        <!-- 🏦 Comptes -->
+        <li class="nav-item">
+          <a routerLink="/comptes" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-university text-secondary"></i>
+            <p>Comptes</p>
+          </a>
+        </li>
+
+        <!-- 💰 Crédits -->
+        <li class="nav-item">
+          <a routerLink="/credits" routerLinkActive="active" class="nav-link">
+            <i class="nav-icon fas fa-credit-card text-warning"></i>
+            <p>Crédits</p>
+          </a>
+        </li>
+
+        <!-- 🧑‍💼 Analystes (Admin uniquement) -->
+        <li class="nav-item" *ngIf="authService.isAdmin()">
+          <a href="/addanalyste" class="nav-link" (click)="emitAddAnalystModal()">
+            <i class="nav-icon fas fa-user-plus text-danger"></i>
+            <p>Ajouter Analyste</p>
+          </a>
+        </li>
+
+      </ul>
+    </nav>
+  </div>
+</aside>

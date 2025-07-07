@@ -1,0 +1,121 @@
+<!-- 📦 CONTAINER GLOBAL -->
+<div class="container mt-4">
+
+  <!-- 🔍 Barre haute (action + recherche) -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <button *ngIf="isAdmin" class="btn btn-primary px-4" (click)="openModal()">
+      <i class="fas fa-credit-card me-2"></i> Ajouter un crédit
+    </button>
+
+    <div class="input-group w-auto">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="fas fa-search text-muted"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0"
+        placeholder="Rechercher par numéro de crédit"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilter()"
+        style="min-width: 250px;"
+      />
+    </div>
+  </div>
+
+  <!-- 🧾 Tableau moderne -->
+  <div class="table-responsive">
+    <table class="table align-middle table-hover shadow-sm rounded overflow-hidden">
+      <thead class="table-light text-primary border-bottom">
+        <tr>
+          <th class="fw-semibold">Numéro Crédit</th>
+          <th class="fw-semibold">Compte Débiteur</th>
+          <th class="fw-semibold">Statut</th>
+          <th class="fw-semibold">
+            Montant
+            <i class="fas fa-sort text-muted ms-1 cursor-pointer" (click)="sortByMontant()"></i>
+          </th>
+          <th class="fw-semibold">
+            Taux
+            <i class="fas fa-sort text-muted ms-1 cursor-pointer" (click)="sortByTaux()"></i>
+          </th>
+          <th class="fw-semibold">
+            Durée 
+            <i class="fas fa-sort text-muted ms-1 cursor-pointer" (click)="sortByDuree()"></i>
+          </th>
+          <th class="fw-semibold text-center" *ngIf="isAdmin">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let credit of filteredCredits | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <td>{{ credit.numCre }}</td>
+          <td>{{ credit.numCptDeb }}</td>
+          <td>{{ credit.statutCredit }}</td>
+          <td>{{ credit.mntCre }}</td>
+          <td>{{ credit.tauInt }}</td>
+          <td>{{ credit.durRem }}</td>
+          <td *ngIf="isAdmin" class="text-center">
+            <button class="btn btn-outline-primary btn-sm me-2 rounded-circle" (click)="openModal(credit)">
+              <i class="fas fa-pen"></i>
+            </button>
+            <button class="btn btn-outline-danger btn-sm rounded-circle" (click)="remove(credit.numCre!)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 📄 Pagination -->
+  <div class="mt-4 d-flex justify-content-center">
+    <pagination-controls
+      (pageChange)="page = $event"
+      [maxSize]="5"
+      [autoHide]="true"
+      [previousLabel]="'‹'"
+      [nextLabel]="'›'">
+    </pagination-controls>
+  </div>
+
+  <!-- ✅ MODAL MODERNE ET CLAIR -->
+  <div *ngIf="showModal" class="modal show fade d-block" tabindex="-1" role="dialog"
+       style="background-color: rgba(0, 0, 0, 0.5); z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content p-4">
+        <h5 class="modal-title text-center fw-bold text-primary mb-4">
+          {{ isEdit ? 'Modifier' : 'Ajouter' }} un Crédit
+        </h5>
+
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Numéro Crédit" [(ngModel)]="selected.numCre" [readonly]="isEdit"/>
+        </div>
+
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Numéro Compte Débiteur" [(ngModel)]="selected.numCptDeb" />
+        </div>
+
+        <div class="mb-3">
+          <input type="text" class="form-control form-control-lg" placeholder="Statut Crédit" [(ngModel)]="selected.statutCredit" />
+        </div>
+
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Montant" [(ngModel)]="selected.mntCre" />
+        </div>
+
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Taux Intérêt" [(ngModel)]="selected.tauInt" />
+        </div>
+
+        <div class="mb-4">
+          <input type="number" class="form-control form-control-lg" placeholder="Durée Remboursement (mois)" [(ngModel)]="selected.durRem" />
+        </div>
+
+        <div class="text-end">
+          <button class="btn btn-outline-secondary me-2 px-4 rounded-pill" (click)="showModal = false">Annuler</button>
+          <button class="btn btn-success px-4 rounded-pill" (click)="save()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

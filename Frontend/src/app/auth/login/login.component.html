@@ -1,0 +1,42 @@
+<div class="login-container">
+  <!-- 🏦 Image banque à gauche -->
+  <div class="login-image">
+    <img src="https://www.ilboursa.com/i/info/b/BTE000_026d9ecc-d817-4258-b39a-2cf60408797e_b.jpg" alt="Banque">
+  </div>
+
+  <!-- 🔐 Formulaire à droite -->
+  <div class="login-form animate__animated animate__fadeInRight">
+    <div class="text-center mb-4">
+      <img src="https://th.bing.com/th/id/OIP.xcpqvTA4fANEkLOiNBSOKwHaHa?rs=1&pid=ImgDetMain"
+           alt="Logo banque"
+           width="80"
+           class="mb-3" />
+      <h3 class="text-primary fw-bold">
+        <i class="fas fa-sign-in-alt me-2"></i> Connexion
+      </h3>
+    </div>
+
+    <form [formGroup]="loginForm" (ngSubmit)="onSubmit()">
+      <div class="mb-3">
+        <label for="email" class="form-label">Email</label>
+        <input type="email" formControlName="email" class="form-control" placeholder="email@example.com" />
+      </div>
+      <div class="mb-4">
+        <label for="password" class="form-label">Mot de passe</label>
+        <input type="password" formControlName="password" class="form-control" placeholder="••••••••" />
+      </div>
+
+      <div *ngIf="errorMessage" class="alert alert-danger text-center">
+        {{ errorMessage }}
+      </div>
+
+      <button type="submit" class="btn btn-primary w-100">
+        <i class="fas fa-sign-in-alt me-1"></i> {{ loading ? 'Connexion...' : 'Se connecter' }}
+      </button>
+    </form>
+
+    <p class="text-center mt-3">
+      <a routerLink="/register" class="text-muted">Pas encore de compte ? <strong>S'inscrire</strong></a>
+    </p>
+  </div>
+</div>

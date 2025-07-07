@@ -1,0 +1,131 @@
+<div class="container mt-4">
+
+  <!-- 🔍 Barre haute (action + recherche) -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <button *ngIf="isAdmin" class="btn btn-primary px-4" (click)="openModal()">
+      <i class="nav-icon fas fa-id-card"></i> Ajouter une carte
+    </button>
+
+    <div class="input-group w-auto">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="fas fa-search text-muted"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0"
+        placeholder="Rechercher par numéro de carte"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilter()"
+        style="min-width: 250px;"
+      />
+    </div>
+  </div>
+
+  <!-- 🧾 Tableau moderne -->
+  <div class="table-responsive">
+    <table class="table align-middle table-hover shadow-sm rounded overflow-hidden">
+      <thead class="table-light text-primary border-bottom">
+        <tr>
+          <th class="fw-semibold">Numéro Carte</th>
+          <th class="fw-semibold" (click)="sortByDate('datFinVal')" style="cursor: pointer;">
+            Expiration
+            <i class="fas fa-sort ms-1 text-secondary"></i>
+          </th>
+          <th class="fw-semibold">Plafond Paiement</th>
+          <th class="fw-semibold">Plafond Retrait</th>
+          <th class="fw -semibold">Statut</th>
+          <th class="fw-semibold" (click)="sortByDate('dateMigration')" style="cursor: pointer;">
+            Migration
+            <i class="fas fa-sort ms-1 text-secondary"></i>
+          </th>
+
+          <th class="fw-semibold text-center">
+            Annulée
+            <i class="fas fa-circle text-danger ms-2" style="cursor: pointer;" title="Voir 'Oui'"
+              (click)="sortByAnnule(true)"></i>
+            <i class="fas fa-circle text-success ms-2" style="cursor: pointer;" title="Voir 'Non'"
+              (click)="sortByAnnule(false)"></i>
+          </th>
+
+
+          <th class="fw-semibold text-center" *ngIf="isAdmin">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let carte of filteredCartes | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <td>{{ carte.numCar }}</td>
+          <td>{{ carte.datFinVal | date }}</td>
+          <td>{{ carte.plaAutPai }}</td>
+          <td>{{ carte.plaAutRet }}</td>
+          <td>{{ getStatutLabel(carte.codSta) }}</td>
+          <td>{{ carte.dateMigration | date }}</td>
+          <td>
+            <span [ngClass]="carte.annule ? 'badge bg-danger' : 'badge bg-success'">
+              {{ carte.annule ? 'Oui' : 'Non' }}
+            </span>
+          </td>
+          <td *ngIf="isAdmin" class="text-center">
+            <button class="btn btn-outline-primary btn-sm me-2 rounded-circle" (click)="openModal(carte)">
+              <i class="fas fa-pen"></i>
+            </button>
+            <button class="btn btn-outline-danger btn-sm rounded-circle" (click)="remove(carte.numCar!)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 📄 Pagination -->
+  <div class="mt-4 d-flex justify-content-center">
+    <pagination-controls
+      (pageChange)="page = $event"
+      [maxSize]="5"
+      [autoHide]="true"
+      [previousLabel]="'‹'"
+      [nextLabel]="'›'">
+    </pagination-controls>
+  </div>
+
+  <!-- ✅ MODAL MODERNE -->
+  <div *ngIf="showModal" class="modal show fade d-block" tabindex="-1" role="dialog"
+       style="background-color: rgba(0, 0, 0, 0.5); z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content p-4">
+        <h5 class="modal-title text-center fw-bold text-primary mb-4">
+          {{ isEdit ? 'Modifier' : 'Ajouter' }} une Carte
+        </h5>
+
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Numéro Carte" [(ngModel)]="selected.numCar" [readonly]="isEdit"/>
+        </div>
+        <div class="mb-3">
+          <input type="date" class="form-control form-control-lg" [(ngModel)]="selected.datFinVal" placeholder="Date Expiration" />
+        </div>
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Plafond Paiement" [(ngModel)]="selected.plaAutPai" />
+        </div>
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Plafond Retrait" [(ngModel)]="selected.plaAutRet" />
+        </div>
+        <div class="mb-3">
+          <input type="number" class="form-control form-control-lg" placeholder="Code Statut" [(ngModel)]="selected.codSta" />
+        </div>
+        <div class="mb-3">
+          <input type="date" class="form-control form-control-lg" [(ngModel)]="selected.dateMigration" placeholder="Date Migration" />
+        </div>
+        <div class="form-check mb-4">
+          <input class="form-check-input" type="checkbox" [(ngModel)]="selected.annule" id="annuleCheck" />
+          <label class="form-check-label" for="annuleCheck">Annulée</label>
+        </div>
+
+        <div class="text-end">
+          <button class="btn btn-outline-secondary me-2 px-4 rounded-pill" (click)="showModal = false">Annuler</button>
+          <button class="btn btn-success px-4 rounded-pill" (click)="save()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>

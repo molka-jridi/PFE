@@ -1,0 +1,110 @@
+<div class="container mt-4">
+  <!-- 🔍 Barre haute -->
+  <div class="d-flex justify-content-between align-items-center mb-3 flex-wrap gap-2">
+    <button *ngIf="isAdmin" class="btn btn-primary px-4" (click)="openModal()">
+      <i class="fas fa-university me-2"></i> Ajouter un compte
+    </button>
+
+    <div class="input-group w-auto">
+      <span class="input-group-text bg-white border-end-0">
+        <i class="fas fa-search text-muted"></i>
+      </span>
+      <input
+        type="text"
+        class="form-control border-start-0"
+        placeholder="Rechercher par numéro de compte"
+        [(ngModel)]="searchTerm"
+        (input)="applyFilter()"
+        style="min-width: 250px;"
+      />
+    </div>
+  </div>
+
+  <!-- 📄 Tableau -->
+  <div class="table-responsive">
+    <table class="table align-middle table-hover shadow-sm rounded overflow-hidden">
+      <thead class="table-light text-primary border-bottom">
+        <tr>
+          <th class="fw-semibold">Numéro Compte</th>
+          <th class="fw-semibold" (click)="sortByDate()" style="cursor: pointer;">
+            Date Ouverture
+            <i class="fas fa-sort ms-1 text-secondary" *ngIf="sortDirection === 'asc'"></i>
+            <i class="fas fa-sort-down ms-1 text-secondary" *ngIf="sortDirection === 'desc'"></i>
+          </th>
+
+          <th class="fw-semibold">Code Devise</th>
+          <th *ngIf="isAdmin" class="fw-semibold text-center">Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let compte of filteredComptes | paginate: { itemsPerPage: itemsPerPage, currentPage: page }">
+          <td>{{ compte.numCpt }}</td>
+          <td>{{ compte.datOuvCpt | date }}</td>
+          <td>{{ compte.codDev }}</td>
+          <td *ngIf="isAdmin" class="text-center">
+            <button class="btn btn-outline-primary btn-sm me-2 rounded-circle" (click)="openModal(compte)">
+              <i class="fas fa-pen"></i>
+            </button>
+            <button class="btn btn-outline-danger btn-sm rounded-circle" (click)="remove(compte.numCpt!)">
+              <i class="fas fa-trash-alt"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- 📄 Pagination -->
+  <div class="mt-4 d-flex justify-content-center">
+    <pagination-controls
+      (pageChange)="page = $event"
+      [maxSize]="5"
+      [autoHide]="true"
+      [previousLabel]="'‹'"
+      [nextLabel]="'›'">
+    </pagination-controls>
+  </div>
+
+  <!-- ✅ MODAL -->
+  <div *ngIf="showModal" class="modal show fade d-block" tabindex="-1" role="dialog"
+       style="background-color: rgba(0, 0, 0, 0.5); z-index: 1050;">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+      <div class="modal-content p-4">
+        <h5 class="modal-title text-center fw-bold text-primary mb-4">
+          {{ isEdit ? 'Modifier' : 'Ajouter' }} un Compte
+        </h5>
+
+        <div class="mb-3">
+          <input
+            class="form-control form-control-lg"
+            placeholder="Numéro Compte"
+            [(ngModel)]="selected.numCpt"
+            [readonly]="isEdit"
+          />
+        </div>
+
+        <div class="mb-3">
+          <input
+            type="date"
+            class="form-control form-control-lg"
+            placeholder="Date Ouverture"
+            [(ngModel)]="selected.datOuvCpt"
+          />
+        </div>
+
+        <div class="mb-3">
+          <input
+            class="form-control form-control-lg"
+            placeholder="Code Devise"
+            [(ngModel)]="selected.codDev"
+          />
+        </div>
+
+        <div class="text-end">
+          <button class="btn btn-outline-secondary me-2 px-4 rounded-pill" (click)="showModal = false">Annuler</button>
+          <button class="btn btn-success px-4 rounded-pill" (click)="save()">Enregistrer</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
