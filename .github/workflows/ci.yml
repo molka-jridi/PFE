@@ -22,6 +22,7 @@ jobs:
       - name: Build and test backend
         run: |
           cd Backend
+          chmod +x mvnw
           ./mvnw test
 
   test-frontend:
