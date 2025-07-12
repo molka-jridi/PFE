@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { AddAnalystComponent } from './add-analyst.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('AddAnalystComponent', () => {
   let component: AddAnalystComponent;
@@ -8,7 +11,9 @@ describe('AddAnalystComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ AddAnalystComponent ]
+      imports: [RouterTestingModule,HttpClientTestingModule],
+      declarations: [ AddAnalystComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 

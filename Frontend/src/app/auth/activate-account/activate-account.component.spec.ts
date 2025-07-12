@@ -1,6 +1,9 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
 import { ActivateAccountComponent } from './activate-account.component';
+import { HttpClientTestingModule } from '@angular/common/http/testing';
+import { RouterTestingModule } from '@angular/router/testing';
+import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
 
 describe('ActivateAccountComponent', () => {
   let component: ActivateAccountComponent;
@@ -8,7 +11,9 @@ describe('ActivateAccountComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ ActivateAccountComponent ]
+      imports: [HttpClientTestingModule,RouterTestingModule],
+      declarations: [ ActivateAccountComponent ],
+      schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
     .compileComponents();
 
