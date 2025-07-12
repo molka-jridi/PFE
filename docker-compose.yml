@@ -1,0 +1,38 @@
+version: "3.8"
+
+services:
+  springboot:
+    build: ./Backend
+    container_name: springboot-app
+    ports:
+      - "8081:8081"
+    environment:
+      SPRING_PROFILES_ACTIVE: default
+      # IMPORTANT: ici on pointe vers le PostgreSQL LOCAL
+      SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/banque
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: 2003
+      SPRING_JPA_HIBERNATE_DDL_AUTO: update
+      SERVER_PORT: 8081
+      JWT_SECRET: wOahHq7t3hxVXqL6dQvRjYp2s5v8y/B1E4iMlNoPmSbWcZfTeUgKiAxCzF9DnG
+      JWT_EXPIRATION: 86400000
+      MAILING_FRONTEND_ACTIVATION_URL: http://localhost:4200/activate-account
+      SPRING_MAIL_HOST: smtp.gmail.com
+      SPRING_MAIL_PORT: 587
+      SPRING_MAIL_USERNAME: molkajridi2003@gmail.com
+      SPRING_MAIL_PASSWORD: bdowndnmaplzxtxx
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_AUTH: "true"
+      SPRING_MAIL_PROPERTIES_MAIL_SMTP_STARTTLS_ENABLE: "true"
+      SPRING_MAIL_DEFAULT_ENCODING: UTF-8
+      SPRING_MAIL_PROTOCOL: smtp
+      LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: DEBUG
+      LOGGING_LEVEL_COM_EXAMPLE: DEBUG
+
+  angular:
+    build: ./Frontend
+    container_name: angular-app
+    ports:
+      - "4200:80"
+
+# volumes:
+#   pgdata:
