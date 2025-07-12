@@ -54,7 +54,7 @@ jobs:
       - name: Verify frontend build
         run: |
           cd Frontend
-          npm run lint
+          npm run build
 
       - name: Run frontend tests
         run: |
