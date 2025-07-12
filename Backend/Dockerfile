@@ -1,8 +1,18 @@
 # Build stage
 FROM maven:3.9.8-eclipse-temurin-17 AS build
 WORKDIR /app
+
+# Copie le pom.xml séparément pour le cache des dépendances
+COPY pom.xml ./
+
+# Télécharge les dépendances
+RUN mvn dependency:go-offline
+
+# Copie tout le reste
 COPY . .
-RUN ./mvnw clean package -DskipTests
+
+# Compile
+RUN mvn clean package -DskipTests
 
 # Run stage
 FROM eclipse-temurin:17-jre
