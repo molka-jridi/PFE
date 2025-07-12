@@ -51,7 +51,7 @@ jobs:
           cd Frontend
           npm install --legacy-peer-deps
 
-      - name: Lint frontend code
+      - name: Verify frontend build
         run: |
           cd Frontend
           npm run lint
