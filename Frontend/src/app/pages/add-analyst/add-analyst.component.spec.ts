@@ -4,6 +4,8 @@ import { AddAnalystComponent } from './add-analyst.component';
 import { HttpClientTestingModule } from '@angular/common/http/testing';
 import { RouterTestingModule } from '@angular/router/testing';
 import { CUSTOM_ELEMENTS_SCHEMA } from '@angular/core';
+import { NgxPaginationModule } from 'ngx-pagination';
+import { FormsModule } from '@angular/forms';
 
 describe('AddAnalystComponent', () => {
   let component: AddAnalystComponent;
@@ -11,7 +13,7 @@ describe('AddAnalystComponent', () => {
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      imports: [RouterTestingModule,HttpClientTestingModule],
+      imports: [RouterTestingModule,HttpClientTestingModule,NgxPaginationModule,FormsModule],
       declarations: [ AddAnalystComponent ],
       schemas: [CUSTOM_ELEMENTS_SCHEMA]
     })
