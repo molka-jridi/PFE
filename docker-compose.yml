@@ -1,6 +1,8 @@
 version: "3.8"
 
 services:
+
+  # SPRING BOOT APP
   springboot:
     build: ./Backend
     container_name: springboot-app
@@ -8,7 +10,6 @@ services:
       - "8081:8081"
     environment:
       SPRING_PROFILES_ACTIVE: default
-      # IMPORTANT: ici on pointe vers le PostgreSQL LOCAL
       SPRING_DATASOURCE_URL: jdbc:postgresql://host.docker.internal:5432/banque
       SPRING_DATASOURCE_USERNAME: postgres
       SPRING_DATASOURCE_PASSWORD: 2003
@@ -28,11 +29,36 @@ services:
       LOGGING_LEVEL_ORG_SPRINGFRAMEWORK: DEBUG
       LOGGING_LEVEL_COM_EXAMPLE: DEBUG
 
+  # ANGULAR FRONTEND
   angular:
     build: ./Frontend
     container_name: angular-app
     ports:
       - "4200:80"
 
-# volumes:
-#   pgdata:
+  # PROMETHEUS
+  prometheus:
+    image: prom/prometheus:latest
+    container_name: prometheus
+    volumes:
+      - ./prometheus.yml:/etc/prometheus/prometheus.yml
+    ports:
+      - "9090:9090"
+    depends_on:
+      - springboot
+
+  # GRAFANA
+  grafana:
+    image: grafana/grafana:latest
+    container_name: grafana
+    ports:
+      - "3000:3000"
+    volumes:
+      - grafana-data:/var/lib/grafana   
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    depends_on:
+      - prometheus
+volumes:
+  grafana-data:

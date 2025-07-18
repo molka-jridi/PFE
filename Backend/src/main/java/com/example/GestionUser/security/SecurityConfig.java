@@ -34,7 +34,9 @@ public class SecurityConfig {
                                         "/api/v1/auth/authenticate",
                                         "/api/v1/auth/activate-account",
                                         "/api/v1/auth/resend-token",
-                                        "/api/v1/auth/users"
+                                        "/api/v1/auth/users",
+                                        "/actuator",
+                                        "/actuator/**"
                                 ).permitAll()
                                 .anyRequest()
                                 .authenticated()
